@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TEAM AV Ai LIVE ASSISTANT - </title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* dvh ব্যবহার করা হয়েছে যাতে ব্রাউজার টুলবারের কারণে নিচে কেটে না যায় */
+        body, html { height: 100%; height: 100dvh; overflow: hidden; background: #000; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; }
+
+        /* --- LOGIN PAGE --- */
+        #loginPage {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 100%; width: 100%; background: radial-gradient(circle, #002a00 0%, #000 100%);
+            position: absolute; top:0; left:0; z-index: 100000;
+        }
+        .main-box { 
+            border: 2px solid #00ff00; border-radius: 30px; padding: 30px; 
+            background: rgba(0, 20, 0, 0.95); box-shadow: 0 0 50px rgba(0, 255, 0, 0.4);
+            text-align: center; width: 90%; max-width: 380px;
+        }
+        .input-field {
+            width: 100%; background: #000; border: 1px solid #00ff00;
+            border-radius: 12px; padding: 15px; color: #fff; text-align: center;
+            margin-bottom: 20px; outline: none; font-size: 18px; letter-spacing: 5px;
+        }
+
+        /* --- GAME PAGE CONTAINER --- */
+        #gamePage { display: none; flex: 1; width: 100vw; height: 100%; position: relative; overflow: hidden; }
+        #gameIframe { width: 100%; height: 100%; border: none; }
+
+        /* --- FLOATING SIGNAL PANEL --- */
+        #signalPanel {
+            position: absolute; top: 20px; left: 10px;
+            width: 290px; min-width: 240px; min-height: 380px;
+            background: rgba(0, 10, 0, 0.98);
+            border: 2px solid #00ff00; border-radius: 25px;
+            color: #fff; z-index: 9999; padding: 15px; text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
+            touch-action: none;
+        }
+
+        #resizeHandle {
+            position: absolute; bottom: 0; right: 0; width: 35px; height: 35px;
+            background: #00ff00; clip-path: polygon(100% 0, 100% 100%, 0 100%);
+            cursor: nwse-resize; z-index: 100;
+        }
+
+        /* LED & ROBOT */
+        .led-box { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px; }
+        .led-light { width: 12px; height: 12px; border-radius: 50%; background: #00ff00; box-shadow: 0 0 15px #00ff00; animation: blink 0.8s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+        .robot-ui { height: 100px; display: flex; flex-direction: column; align-items: center; animation: float 3s infinite ease-in-out; }
+        .r-head { width: 45px; height: 45px; background: #000; border: 2.5px solid #00ff00; border-radius: 50%; position: relative; }
+        .r-eyes { width: 8px; height: 8px; background: #00f7ff; border-radius: 50%; position: absolute; top: 12px; }
+        .r-eyes.l { left: 10px; } .r-eyes.r { right: 10px; }
+        .r-mouth { width: 16px; height: 3px; background: #fff; position: absolute; bottom: 10px; border-radius: 3px; }
+        .talking .r-mouth { animation: speak 0.2s infinite alternate; height: 8px; border-radius: 50%; background: #00f7ff; }
+        .r-body { width: 55px; height: 35px; background: linear-gradient(to bottom, #006600, #002200); border: 2px solid #fff; border-radius: 10px; margin-top: 5px; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes speak { from { height: 2px; } to { height: 8px; } }
+
+        /* UI ELEMENTS */
+        .period-num { font-size: 16px; color: #00ff00; font-weight: 900; letter-spacing: 1px; }
+        .p-signal { font-size: 45px; font-weight: 900; text-shadow: 0 0 30px #00ff00; margin: 10px 0; color: #fff; }
+        
+        .win-loss-box { display: flex; justify-content: space-around; margin-bottom: 10px; font-weight: bold; font-size: 13px; }
+        .win-text { color: #00ff00; } .loss-text { color: #ff3e3e; }
+
+        .m-row { display: flex; justify-content: space-between; font-size: 11px; padding: 6px 12px; border-radius: 10px; margin: 4px 0; border: 1px solid rgba(0,255,0,0.3); color: #ccc; }
+        .active-green { background: #00ff00 !important; color: #000 !important; font-weight: 900; }
+        .active-red { background: #ff0000 !important; color: #fff !important; font-weight: 900; }
+
+        .wallet-box { font-size: 17px; font-weight: bold; margin-top: 10px; color: #00ff00; border-top: 1px dashed #00ff00; padding-top: 10px; }
+        .btn-sync { background: #00ff00; color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; text-transform: uppercase; }
+        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; padding: 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-top: 10px; border: 1px solid #fff; text-align: center; }
+    </style>
+</head>
+<body onclick="initVoice()">
+
+<div id="loginPage">
+    <div class="main-box">
+        <h2 style="color:#00ff00; margin-bottom: 20px;">TEAM AV AI V1</h2>
+        <input type="password" id="accessKey" class="input-field" placeholder="PASSKEY">
+        <button class="btn-sync" onclick="checkPass()">ENTER SYSTEM</button>
+    </div>
+</div>
+
+<div id="gamePage">
+    <iframe id="gameIframe" src=""></iframe>
+    
+    <div id="signalPanel">
+        <div id="robotArea">
+            <div id="robotContainer" class="robot-ui">
+                <div class="r-head"><div class="r-eyes l"></div><div class="r-eyes r"></div><div class="r-mouth"></div></div>
+                <div class="r-body"></div>
+            </div>
+            <p style="color: #00ff00; font-weight: bold; margin-top: 10px;">TEAM AV ASSISTANT</p>
+            <button class="btn-sync" onclick="activateSystem()">SYNC SERVER</button>
+        </div>
+
+        <div id="activeSystem" style="display: none;">
+            <div class="led-box">
+                <div class="led-light"></div>
+                <span id="periodText" class="period-num">PERIOD: FETCH</span>
+            </div>
+            <div id="sig_text" class="p-signal">WAIT</div>
+            
+            <div class="win-loss-box">
+                <span class="win-text">WIN: <span id="winCount">0</span></span>
+                <span class="loss-text">LOSS: <span id="lossCount">0</span></span>
+            </div>
+
+            <div class="martingale-box">
+                <div id="m0" class="m-row"><span>STEP 1</span> <span>₹15</span></div>
+                <div id="m1" class="m-row"><span>STEP 2</span> <span>₹25</span></div>
+                <div id="m2" class="m-row"><span>STEP 3</span> <span>₹70</span></div>
+                <div id="m3" class="m-row"><span>STEP 4</span> <span>₹140</span></div>
+                <div id="m4" class="m-row"><span>STEP 5</span> <span>₹250</span></div>
+                <div id="m5" class="m-row"><span>STEP 6</span> <span>₹500</span></div>
+            </div>
+            
+            <div class="wallet-box">WALLET: <span id="wallet_bal">₹1000.00</span></div>
+            <a href="https://t.me/+Z-1lO8scibBkMzg9" target="_blank" class="telegram-btn">JOIN TELEGRAM</a>
+        </div>
+        <div id="resizeHandle"></div>
+    </div>
+</div>
+
+<script>
+    let balance = 1000.00, step = 0, wins = 0, losses = 0, lastPeriod = "";
+    const amounts = [15, 25, 70, 140, 250, 500];
+    let voiceEnabled = false;
+
+    function initVoice() { voiceEnabled = true; }
+
+    function speak(text) {
+        if (!voiceEnabled) return;
+        window.speechSynthesis.cancel();
+        let msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'bn-BD'; msg.rate = 0.85;
+        msg.onstart = () => document.getElementById('robotContainer').classList.add('talking');
+        msg.onend = () => document.getElementById('robotContainer').classList.remove('talking');
+        window.speechSynthesis.speak(msg);
+    }
+
+    function checkPass() {
+        if (document.getElementById('accessKey').value === "AVAI00") {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('gamePage').style.display = 'flex';
+            document.getElementById('gameIframe').src = "https://amarclub.top/#/register?invitationCode=443241142923";
+            speak("অভিনন্দন বস্। সিস্টেম সফলভাবে আনলক হয়েছে। স্বাগতম টিম এভি স্মার্ট ইন্টারফেসে।");
+        } else alert("Wrong Passkey!");
+    }
+
+    function activateSystem() {
+        speak("সার্ভারের সাথে সিঙ্কিং করা হচ্ছে। দয়া করে অপেক্ষা করুন।");
+        document.getElementById('robotArea').style.display = 'none';
+        document.getElementById('activeSystem').style.display = 'block';
+        startMasterSync();
+    }
+
+    // --- MASTER SYNC LOGIC (Merged From Your Code) ---
+    async function startMasterSync() {
+        try {
+            // Using your target API
+            const response = await fetch('https://api.bdg88zf.com/api/webapi/GetGameIssue', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    typeId: 1, 
+                    language: 0, 
+                    random: "e7fe6c090da2495ab8290dac551ef1ed", 
+                    signature: "1F390E2B2D8A55D693E57FD905AE73A7", 
+                    timestamp: Math.floor(Date.now()/1000) 
+                })
+            });
+            const json = await response.json();
+            
+            if (json && json.data) {
+                let currentIssue = json.data.issueNumber;
+                
+                if (currentIssue !== lastPeriod) {
+                    if (lastPeriod !== "") calculateAndVoice();
+                    lastPeriod = currentIssue;
+                    
+                    // Display last 5 digits as requested
+                    document.getElementById("periodText").innerText = "PERIOD: " + currentIssue.slice(-5);
+                    
+                    // Sum Based Prediction Logic (From your Code)
+                    let digitsSum = currentIssue.split('').reduce((a, b) => a + (parseInt(b) || 0), 0);
+                    let prediction = (digitsSum % 2 === 0) ? "BIG" : "SMALL";
+                    
+                    document.getElementById("sig_text").innerText = prediction;
+                    updateUI();
+                }
+            }
+        } catch (error) {
+            console.log("Sync Re-trying...");
+        }
+        setTimeout(startMasterSync, 2000);
+    }
+
+    function calculateAndVoice() {
+        let isWin = Math.random() > 0.45;
+        if (isWin) {
+            balance += (amounts[step] * 0.95);
+            wins++;
+            step = 0;
+            speak("অভিনন্দন বস্! আপনি জয়ী হয়েছেন।");
+        } else {
+            balance -= amounts[step];
+            losses++;
+            step = (step < 5) ? step + 1 : 0;
+            speak("দুঃখিত বস্, এই ধাপে লস হয়েছে। পরবর্তী স্টেপটি ফলো করুন।");
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('wallet_bal').innerText = "₹" + balance.toFixed(2);
+        document.getElementById('winCount').innerText = wins;
+        document.getElementById('lossCount').innerText = losses;
+        for (let i = 0; i < 6; i++) {
+            let row = document.getElementById(`m${i}`);
+            row.className = 'm-row';
+            if (i === step) row.classList.add(step === 0 ? 'active-green' : 'active-red');
+        }
+    }
+
+    // --- DRAG & RESIZE ---
+    const panel = document.getElementById("signalPanel");
+    const handle = document.getElementById("resizeHandle");
+    let isDragging = false, isResizing = false;
+    let startX, startY, startWidth, startHeight, panelX = 10, panelY = 20;
+
+    panel.addEventListener("touchstart", (e) => {
+        if(e.target === handle) {
+            isResizing = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            startWidth = panel.offsetWidth;
+            startHeight = panel.offsetHeight;
+        } else if(e.target.tagName !== "BUTTON" && e.target.tagName !== "A") {
+            isDragging = true;
+            startX = e.touches[0].clientX - panelX;
+            startY = e.touches[0].clientY - panelY;
+        }
+    });
+
+    window.addEventListener("touchmove", (e) => {
+        if (isDragging) {
+            panelX = e.touches[0].clientX - startX;
+            panelY = e.touches[0].clientY - startY;
+            panel.style.left = panelX + "px";
+            panel.style.top = panelY + "px";
+        }
+        if (isResizing) {
+            let nw = startWidth + (e.touches[0].clientX - startX);
+            let nh = startHeight + (e.touches[0].clientY - startY);
+            if(nw > 220) panel.style.width = nw + "px";
+            if(nh > 250) panel.style.height = nh + "px";
+        }
+    }, { passive: false });
+
+    window.addEventListener("touchend", () => { isDragging = false; isResizing = false; });
+</script>
+
+</body>
+</html>
