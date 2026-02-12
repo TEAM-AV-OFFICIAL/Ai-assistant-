@@ -159,13 +159,16 @@
 
     function unlockEngine() {
         let pin = prompt("ইঞ্জিন আনলক পাসকি (00000):");
-        if(pin === "AVAI00") {
+        if(pin === "AVAI10") {
             document.getElementById('lockArea').style.display = 'none';
             document.getElementById('activeSystem').style.display = 'block';
             speak("বস্, ইঞ্জিন আনলক হয়েছে। আমি সার্ভারে সংযুক্ত হচ্ছি।");
             startMasterSync();
         } else {
-            alert("ভুল পাসকি!");
+            alert("if (confirm("আপনার পাসওয়ার্ড ভুল! এডমিনের সাথে যোগাযোগ করতে 'OK' চাপুন।")) {
+    window.open("https://t.me/TEAM_AV_OWNER_AYMAN_VAi", "_blank");
+}
+);
         }
     }
 
@@ -249,4 +252,5 @@
 </script>
 </body>
 </html>
+
 
