@@ -18,7 +18,6 @@
         #signalPanel { position: absolute; top: 20px; left: 10px; width: 300px; height: 550px; background: linear-gradient(145deg, rgba(5, 15, 5, 0.98), rgba(0, 30, 0, 0.95)); border: 2px solid #00ff00; border-radius: 30px; color: #fff; z-index: 10000; padding: 15px; text-align: center; box-shadow: 0 10px 40px #000; backdrop-filter: blur(15px); touch-action: none; overflow: hidden; }
         #panelInner { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; transform-origin: top center; }
         
-        /* Robot Animation */
         .robot-ui { height: 110px; margin-bottom: 10px; position: relative; width: 60px; margin: 0 auto; }
         .r-head { width: 35px; height: 38px; background: #000; border: 2.5px solid #00ff00; border-radius: 50% 50% 40% 40%; margin: 0 auto; position: relative; z-index: 5; animation: float 3s infinite ease-in-out; }
         .r-eyes { display: flex; justify-content: space-around; padding-top: 12px; }
@@ -36,12 +35,9 @@
         @keyframes armSwing { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
         
         .colorful-text { background: linear-gradient(to right, #00ff00, #00f7ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Orbitron'; font-weight: bold; }
-        
-        /* Blinking Red Dot */
         .period-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: gold; margin: 10px 0; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; border: 1px solid #333; }
         .red-dot { width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: blinker 1s linear infinite; }
         @keyframes blinker { 50% { opacity: 0; } }
-
         .sig-val { font-size: 45px; font-weight: 900; color: #fff; text-shadow: 0 0 25px #00ff00; margin: 5px 0; font-family: 'Orbitron'; }
         .stats { display: flex; justify-content: space-around; width: 100%; font-size: 11px; margin-bottom: 8px; }
         .m-row { display: flex; justify-content: space-between; font-size: 10px; padding: 7px 15px; border-radius: 12px; margin: 3px 0; border: 1px solid rgba(0,255,0,0.2); background: rgba(0,0,0,0.5); width: 100%; }
@@ -121,9 +117,7 @@
     const amounts = [15, 25, 70, 140, 250, 500];
     let voiceEnabled = false;
 
-    function initSystem() { 
-        voiceEnabled = true; 
-    }
+    function initSystem() { voiceEnabled = true; }
 
     function speak(text) {
         if (!voiceEnabled) return;
@@ -141,35 +135,24 @@
         document.getElementById('loginPage').style.display = 'none';
         document.getElementById('gamePage').style.display = 'block';
         document.getElementById('gameIframe').src = "https://amarclub.top/#/register?invitationCode=443241142923";
-        
         let music = document.getElementById('bgMusic');
         music.volume = 0.2;
         music.play();
-
-        // ১০ সেকেন্ড পর মিউজিক বন্ধ হবে
-        setTimeout(() => {
-            music.pause();
-            music.currentTime = 0;
-        }, 10000);
-
-        setTimeout(() => {
-            speak("Welcome to my PENEL ami team AV AI assistant বলছি পিরিয়ড  ৫০ সেকেন্ড থাকতে সিগনাল স্টার্ট দিন আর আমার কথা ফলো করুন ");
-        }, 1000);
+        setTimeout(() => { music.pause(); music.currentTime = 0; }, 10000);
+        setTimeout(() => { speak("Welcome to my PENEL ami team AV AI assistant বলছি পিরিয়ড ৫০ সেকেন্ড থাকতে সিগনাল স্টার্ট দিন আর আমার কথা ফলো করুন"); }, 1000);
     }
 
     function unlockEngine() {
-        let pin = prompt("ইঞ্জিন আনলক পাসকি (00000):");
+        let pin = prompt("ইঞ্জিন আনলক পাসকি দিন:");
         if(pin === "AVAI10") {
             document.getElementById('lockArea').style.display = 'none';
             document.getElementById('activeSystem').style.display = 'block';
             speak("বস্, ইঞ্জিন আনলক হয়েছে। আমি সার্ভারে সংযুক্ত হচ্ছি।");
             startMasterSync();
-        } else {
-              if (confirm("আপনার পাসওয়ার্ড ভুল! এডমিনের সাথে যোগাযোগ করতে 'OK' চাপুন।")) {
-    window.open("https://t.me/TEAM_AV_OWNER_AYMAN_VAi", "_blank");
-   }
-
-
+        } else if (pin !== null) {
+            if (confirm("আপনার পাসওয়ার্ড ভুল! এডমিনের সাথে যোগাযোগ করতে 'OK' চাপুন।")) {
+                window.open("https://t.me/TEAM_AV_OWNER_AYMAN_VAi", "_blank");
+            }
         }
     }
 
@@ -184,20 +167,13 @@
             if (json && json.data) {
                 let currentIssue = json.data.issueNumber;
                 if (currentIssue !== lastPeriod) {
-                    if (lastPeriod !== "") {
-                        calculateResult();
-                    }
+                    if (lastPeriod !== "") { calculateResult(); }
                     lastPeriod = currentIssue;
                     document.getElementById("periodText").innerText = "PERIOD: " + currentIssue.slice(-5);
                     let digitsSum = currentIssue.split('').reduce((a, b) => a + (parseInt(b) || 0), 0);
                     let prediction = (digitsSum % 2 === 0) ? "BIG" : "SMALL";
                     document.getElementById("sig_text").innerText = prediction;
-                    
-                    // রেজাল্ট ভয়েস শেষ হওয়ার জন্য ৪ সেকেন্ড অপেক্ষা করে সিগন্যাল বলবে
-                    setTimeout(() => {
-                        speak(`নতুন পিরিয়ড এসেছে। এবারের সিগন্যাল ${prediction}। লেভেল ${step + 1} অনুযায়ী ${amounts[step]} টাকা ধরুন।`);
-                    }, 4500);
-                    
+                    setTimeout(() => { speak(`নতুন পিরিয়ড এসেছে। এবারের সিগন্যাল ${prediction}। লেভেল ${step + 1} অনুযায়ী ${amounts[step]} টাকা ধরুন।`); }, 4500);
                     updateUI();
                 }
             }
@@ -207,19 +183,16 @@
 
     function calculateResult() {
         let isWin = Math.random() > 0.45; 
-        
         if (isWin) { 
             let profit = (amounts[step] * 0.92).toFixed(2);
-            balance += parseFloat(profit); 
-            wins++; 
-            speak(`অভিনন্দন বস্! এই রাউন্ডে আমরা উইন হয়েছি। আপনি ${profit} টাকা প্রফিট করেছেন। পরের ট্রেডে আমরা আবার লেভেল ১ থেকে ${amounts[0]} টাকা ধরবো।`); 
+            balance += parseFloat(profit); wins++; 
+            speak(`অভিনন্দন বস্! এই রাউন্ডে আমরা উইন হয়েছি। আপনি ${profit} টাকা প্রফিট করেছেন।`); 
             step = 0; 
         } else { 
             let lostAmount = amounts[step];
-            balance -= lostAmount; 
-            losses++; 
+            balance -= lostAmount; losses++; 
             let nextAmt = amounts[step + 1] ? amounts[step + 1] : amounts[0];
-            speak(`ওহ বস্, এই রাউন্ডে আমাদের ${lostAmount} টাকা লস হয়েছে। চিন্তা করবেন না, লস রিকভার করার জন্য পরের ট্রেডে আমরা লেভেল ${step + 2} অনুযায়ী ${nextAmt} টাকা ধরবো।`);
+            speak(`ওহ বস্, এই রাউন্ডে আমাদের ${lostAmount} টাকা লস হয়েছে। চিন্তা করবেন না।`);
             step = (step < 5) ? step + 1 : 0; 
         }
         updateUI();
@@ -253,6 +226,3 @@
 </script>
 </body>
 </html>
-
-
-
