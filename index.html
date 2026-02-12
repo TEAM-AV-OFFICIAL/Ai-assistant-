@@ -3,128 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TEAM AV Ai LIVE ASSISTANT - </title>
+    <title>TEAM AV Ai PREMIMUM V4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        /* dvh ব্যবহার করা হয়েছে যাতে ব্রাউজার টুলবারের কারণে নিচে কেটে না যায় */
-        body, html { height: 100%; height: 100dvh; overflow: hidden; background: #000; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; }
-
-        /* --- LOGIN PAGE --- */
-        #loginPage {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            height: 100%; width: 100%; background: radial-gradient(circle, #002a00 0%, #000 100%);
-            position: absolute; top:0; left:0; z-index: 100000;
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { 
+            height: 100%; width: 100%; overflow: hidden; background: #000; font-family: 'Poppins', sans-serif; 
         }
-        .main-box { 
-            border: 2px solid #00ff00; border-radius: 30px; padding: 30px; 
-            background: rgba(0, 20, 0, 0.95); box-shadow: 0 0 50px rgba(0, 255, 0, 0.4);
-            text-align: center; width: 90%; max-width: 380px;
-        }
-        .input-field {
-            width: 100%; background: #000; border: 1px solid #00ff00;
-            border-radius: 12px; padding: 15px; color: #fff; text-align: center;
-            margin-bottom: 20px; outline: none; font-size: 18px; letter-spacing: 5px;
-        }
+        #loginPage { position: fixed; top:0; left:0; width: 100%; height: 100%; background: radial-gradient(circle, #001a33, #000); display: flex; justify-content: center; align-items: center; z-index: 100000; }
+        .main-box { border: 3px solid #00f7ff; border-radius: 40px; padding: 40px; background: rgba(0, 10, 20, 0.95); text-align: center; width: 320px; box-shadow: 0 0 50px rgba(0, 247, 255, 0.3); }
+        #gamePage { display: none; width: 100vw; height: 100dvh; position: relative; overflow: hidden; }
+        #gameIframe { width: 100%; height: 100%; border: none; display: block; }
 
-        /* --- GAME PAGE CONTAINER --- */
-        #gamePage { display: none; flex: 1; width: 100vw; height: 100%; position: relative; overflow: hidden; }
-        #gameIframe { width: 100%; height: 100%; border: none; }
-
-        /* --- FLOATING SIGNAL PANEL --- */
-        #signalPanel {
-            position: absolute; top: 20px; left: 10px;
-            width: 290px; min-width: 240px; min-height: 380px;
-            background: rgba(0, 10, 0, 0.98);
-            border: 2px solid #00ff00; border-radius: 25px;
-            color: #fff; z-index: 9999; padding: 15px; text-align: center;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.7);
-            touch-action: none;
-        }
-
-        #resizeHandle {
-            position: absolute; bottom: 0; right: 0; width: 35px; height: 35px;
-            background: #00ff00; clip-path: polygon(100% 0, 100% 100%, 0 100%);
-            cursor: nwse-resize; z-index: 100;
-        }
-
-        /* LED & ROBOT */
-        .led-box { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 5px; }
-        .led-light { width: 12px; height: 12px; border-radius: 50%; background: #00ff00; box-shadow: 0 0 15px #00ff00; animation: blink 0.8s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-
-        .robot-ui { height: 100px; display: flex; flex-direction: column; align-items: center; animation: float 3s infinite ease-in-out; }
-        .r-head { width: 45px; height: 45px; background: #000; border: 2.5px solid #00ff00; border-radius: 50%; position: relative; }
-        .r-eyes { width: 8px; height: 8px; background: #00f7ff; border-radius: 50%; position: absolute; top: 12px; }
-        .r-eyes.l { left: 10px; } .r-eyes.r { right: 10px; }
-        .r-mouth { width: 16px; height: 3px; background: #fff; position: absolute; bottom: 10px; border-radius: 3px; }
-        .talking .r-mouth { animation: speak 0.2s infinite alternate; height: 8px; border-radius: 50%; background: #00f7ff; }
-        .r-body { width: 55px; height: 35px; background: linear-gradient(to bottom, #006600, #002200); border: 2px solid #fff; border-radius: 10px; margin-top: 5px; }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        @keyframes speak { from { height: 2px; } to { height: 8px; } }
-
-        /* UI ELEMENTS */
-        .period-num { font-size: 16px; color: #00ff00; font-weight: 900; letter-spacing: 1px; }
-        .p-signal { font-size: 45px; font-weight: 900; text-shadow: 0 0 30px #00ff00; margin: 10px 0; color: #fff; }
+        #signalPanel { position: absolute; top: 20px; left: 10px; width: 300px; height: 550px; background: linear-gradient(145deg, rgba(5, 15, 5, 0.98), rgba(0, 30, 0, 0.95)); border: 2px solid #00ff00; border-radius: 30px; color: #fff; z-index: 10000; padding: 15px; text-align: center; box-shadow: 0 10px 40px #000; backdrop-filter: blur(15px); touch-action: none; overflow: hidden; }
+        #panelInner { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; transform-origin: top center; }
         
-        .win-loss-box { display: flex; justify-content: space-around; margin-bottom: 10px; font-weight: bold; font-size: 13px; }
-        .win-text { color: #00ff00; } .loss-text { color: #ff3e3e; }
+        /* Robot Animation */
+        .robot-ui { height: 110px; margin-bottom: 10px; position: relative; width: 60px; margin: 0 auto; }
+        .r-head { width: 35px; height: 38px; background: #000; border: 2.5px solid #00ff00; border-radius: 50% 50% 40% 40%; margin: 0 auto; position: relative; z-index: 5; animation: float 3s infinite ease-in-out; }
+        .r-eyes { display: flex; justify-content: space-around; padding-top: 12px; }
+        .r-eye { width: 5px; height: 5px; background: #00f7ff; border-radius: 50%; box-shadow: 0 0 8px #00f7ff; }
+        .r-mouth { width: 12px; height: 3px; background: #00ff00; margin: 8px auto; border-radius: 2px; transition: all 0.05s; }
+        .talking .r-mouth { height: 10px; border-radius: 50%; background: #00f7ff; animation: lipSync 0.2s infinite alternate; }
+        .r-body-wrap { position: relative; top: -5px; width: 45px; margin: 0 auto; }
+        .r-body { width: 45px; height: 40px; background: #002200; border: 2.2px solid #00ff00; border-radius: 8px; position: relative; z-index: 4; }
+        .r-arm { width: 6px; height: 25px; background: #000; border: 1.5px solid #00ff00; position: absolute; top: 5px; border-radius: 4px; z-index: 3; }
+        .r-arm.left { left: -8px; transform-origin: top; animation: armSwing 2s infinite alternate; }
+        .r-arm.right { right: -8px; transform-origin: top; animation: armSwing 2s infinite alternate-reverse; }
+        
+        @keyframes lipSync { from { transform: scaleY(0.4); } to { transform: scaleY(1.3); } }
+        @keyframes float { 50% { transform: translateY(-5px); } }
+        @keyframes armSwing { from { transform: rotate(-10deg); } to { transform: rotate(10deg); } }
+        
+        .colorful-text { background: linear-gradient(to right, #00ff00, #00f7ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Orbitron'; font-weight: bold; }
+        
+        /* Blinking Red Dot */
+        .period-box { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; color: gold; margin: 10px 0; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; border: 1px solid #333; }
+        .red-dot { width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000; animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
 
-        .m-row { display: flex; justify-content: space-between; font-size: 11px; padding: 6px 12px; border-radius: 10px; margin: 4px 0; border: 1px solid rgba(0,255,0,0.3); color: #ccc; }
+        .sig-val { font-size: 45px; font-weight: 900; color: #fff; text-shadow: 0 0 25px #00ff00; margin: 5px 0; font-family: 'Orbitron'; }
+        .stats { display: flex; justify-content: space-around; width: 100%; font-size: 11px; margin-bottom: 8px; }
+        .m-row { display: flex; justify-content: space-between; font-size: 10px; padding: 7px 15px; border-radius: 12px; margin: 3px 0; border: 1px solid rgba(0,255,0,0.2); background: rgba(0,0,0,0.5); width: 100%; }
         .active-green { background: #00ff00 !important; color: #000 !important; font-weight: 900; }
-        .active-red { background: #ff0000 !important; color: #fff !important; font-weight: 900; }
-
-        .wallet-box { font-size: 17px; font-weight: bold; margin-top: 10px; color: #00ff00; border-top: 1px dashed #00ff00; padding-top: 10px; }
-        .btn-sync { background: #00ff00; color: #000; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; text-transform: uppercase; }
-        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; padding: 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-top: 10px; border: 1px solid #fff; text-align: center; }
+        .active-red { background: #ff3e3e !important; color: #fff !important; font-weight: 900; }
+        .btn { border: none; padding: 12px; border-radius: 15px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; width: 100%; font-size: 12px; }
+        .btn-enter { background: linear-gradient(90deg, #00f7ff, #00ff00); color: #000; font-size: 16px; margin-top: 10px; }
+        .btn-unlock { background: #ffcc00; color: #000; margin-top: 15px; }
+        .btn-tg { background: #0088cc; color: #fff; text-decoration: none; display: block; padding: 8px; border-radius: 12px; font-size: 10px; margin-top: 10px; text-align: center; }
+        #resizeHandle { position: absolute; bottom: 0; right: 0; width: 40px; height: 40px; cursor: nwse-resize; background: linear-gradient(135deg, transparent 50%, #00ff00 50%); border-radius: 0 0 30px 0; }
     </style>
 </head>
-<body onclick="initVoice()">
+<body onclick="initSystem()">
+
+<audio id="bgMusic">
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
+</audio>
 
 <div id="loginPage">
     <div class="main-box">
-        <h2 style="color:#00ff00; margin-bottom: 20px;">TEAM AV AI V1</h2>
-        <input type="password" id="accessKey" class="input-field" placeholder="PASSKEY">
-        <button class="btn-sync" onclick="checkPass()">ENTER SYSTEM</button>
+        <h2 class="colorful-text" style="font-size: 26px;">TEAM AV AI Bot</h2>
+        <p style="color: #888; font-size: 12px;">Premium Version 4.0</p>
+        <button class="btn btn-enter" onclick="enterSystem()">ACCESS SYSTEM</button>
     </div>
 </div>
 
 <div id="gamePage">
     <iframe id="gameIframe" src=""></iframe>
-    
     <div id="signalPanel">
-        <div id="robotArea">
+        <div id="panelInner">
             <div id="robotContainer" class="robot-ui">
-                <div class="r-head"><div class="r-eyes l"></div><div class="r-eyes r"></div><div class="r-mouth"></div></div>
-                <div class="r-body"></div>
+                <div class="r-head">
+                    <div class="r-eyes"><div class="r-eye"></div><div class="r-eye"></div></div>
+                    <div class="r-mouth"></div>
+                </div>
+                <div class="r-body-wrap">
+                    <div class="r-body"></div>
+                    <div class="r-arm left"></div>
+                    <div class="r-arm right"></div>
+                </div>
             </div>
-            <p style="color: #00ff00; font-weight: bold; margin-top: 10px;">TEAM AV ASSISTANT</p>
-            <button class="btn-sync" onclick="activateSystem()">SYNC SERVER</button>
-        </div>
-
-        <div id="activeSystem" style="display: none;">
-            <div class="led-box">
-                <div class="led-light"></div>
-                <span id="periodText" class="period-num">PERIOD: FETCH</span>
+            <h3 class="colorful-text" style="font-size: 13px;">AV digital ASSISTANT</h3>
+            <div id="lockArea" style="width: 100%;">
+                <p style="color: #ff3e3e; font-size: 10px; margin-top: 5px;">SERVER STATUS: LOCKED</p>
+                <button class="btn btn-unlock" onclick="unlockEngine()">🔓 UNLOCK ENGINE</button>
             </div>
-            <div id="sig_text" class="p-signal">WAIT</div>
-            
-            <div class="win-loss-box">
-                <span class="win-text">WIN: <span id="winCount">0</span></span>
-                <span class="loss-text">LOSS: <span id="lossCount">0</span></span>
+            <div id="activeSystem" style="display: none; width: 100%;">
+                <div class="period-box">
+                    <span id="periodText" class="colorful-text">PERIOD: FETCHING</span>
+                    <div class="red-dot"></div>
+                </div>
+                <div id="sig_text" class="sig-val">WAIT</div>
+                <div class="stats">
+                    <span style="color: #00ff00;">WIN: <span id="winCount">0</span></span>
+                    <span style="color: #ff3e3e;">LOSS: <span id="lossCount">0</span></span>
+                </div>
+                <div class="martingale-box" style="width: 100%;">
+                    <div id="m0" class="m-row"><span>LEVEL 1</span> <span>₹15</span></div>
+                    <div id="m1" class="m-row"><span>LEVEL 2</span> <span>₹25</span></div>
+                    <div id="m2" class="m-row"><span>LEVEL 3</span> <span>₹70</span></div>
+                    <div id="m3" class="m-row"><span>LEVEL 4</span> <span>₹140</span></div>
+                    <div id="m4" class="m-row"><span>LEVEL 5</span> <span>₹250</span></div>
+                    <div id="m5" class="m-row"><span>LEVEL 6</span> <span>₹500</span></div>
+                </div>
+                <div style="color:#00ff00; font-weight:bold; margin-top:8px; font-size:12px; font-family:'Orbitron';">
+                    WALLET: <span id="wallet_bal">₹1000.00</span>
+                </div>
+                <a href="https://t.me/+Z-1lO8scibBkMzg9" target="_blank" class="btn-tg">JOIN OFFICIAL TELEGRAM</a>
             </div>
-
-            <div class="martingale-box">
-                <div id="m0" class="m-row"><span>STEP 1</span> <span>₹15</span></div>
-                <div id="m1" class="m-row"><span>STEP 2</span> <span>₹25</span></div>
-                <div id="m2" class="m-row"><span>STEP 3</span> <span>₹70</span></div>
-                <div id="m3" class="m-row"><span>STEP 4</span> <span>₹140</span></div>
-                <div id="m4" class="m-row"><span>STEP 5</span> <span>₹250</span></div>
-                <div id="m5" class="m-row"><span>STEP 6</span> <span>₹500</span></div>
-            </div>
-            
-            <div class="wallet-box">WALLET: <span id="wallet_bal">₹1000.00</span></div>
-            <a href="https://t.me/+Z-1lO8scibBkMzg9" target="_blank" class="telegram-btn">JOIN TELEGRAM</a>
         </div>
         <div id="resizeHandle"></div>
     </div>
@@ -135,88 +121,104 @@
     const amounts = [15, 25, 70, 140, 250, 500];
     let voiceEnabled = false;
 
-    function initVoice() { voiceEnabled = true; }
+    function initSystem() { 
+        voiceEnabled = true; 
+    }
 
     function speak(text) {
         if (!voiceEnabled) return;
         window.speechSynthesis.cancel();
         let msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'bn-BD'; msg.rate = 0.85;
+        msg.lang = 'bn-BD'; 
+        msg.rate = 1.0; 
+        msg.pitch = 1.0; 
         msg.onstart = () => document.getElementById('robotContainer').classList.add('talking');
         msg.onend = () => document.getElementById('robotContainer').classList.remove('talking');
         window.speechSynthesis.speak(msg);
     }
 
-    function checkPass() {
-        if (document.getElementById('accessKey').value === "AVAI00") {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('gamePage').style.display = 'flex';
-            document.getElementById('gameIframe').src = "https://amarclub.top/#/register?invitationCode=443241142923";
-            speak("অভিনন্দন বস্। সিস্টেম সফলভাবে আনলক হয়েছে। স্বাগতম টিম এভি স্মার্ট ইন্টারফেসে।");
-        } else alert("Wrong Passkey!");
+    function enterSystem() {
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('gamePage').style.display = 'block';
+        document.getElementById('gameIframe').src = "https://amarclub.top/#/register?invitationCode=443241142923";
+        
+        let music = document.getElementById('bgMusic');
+        music.volume = 0.2;
+        music.play();
+
+        // ১০ সেকেন্ড পর মিউজিক বন্ধ হবে
+        setTimeout(() => {
+            music.pause();
+            music.currentTime = 0;
+        }, 10000);
+
+        setTimeout(() => {
+            speak("Welcome to my PENEL ami team AV AI assistant বলছি পিরিয়ড  ৫০ সেকেন্ড থাকতে সিগনাল স্টার্ট দিন আর আমার কথা ফলো করুন ");
+        }, 1000);
     }
 
-    function activateSystem() {
-        speak("সার্ভারের সাথে কানেক্ট হয়েছে দয়া করে স্টার্ট করুন।");
-        document.getElementById('robotArea').style.display = 'none';
-        document.getElementById('activeSystem').style.display = 'block';
-        startMasterSync();
+    function unlockEngine() {
+        let pin = prompt("ইঞ্জিন আনলক পাসকি (AVAI00):");
+        if(pin === "AVAI00") {
+            document.getElementById('lockArea').style.display = 'none';
+            document.getElementById('activeSystem').style.display = 'block';
+            speak("বস্, ইঞ্জিন আনলক হয়েছে। আমি সার্ভারে সংযুক্ত হচ্ছি।");
+            startMasterSync();
+        } else {
+            alert("ভুল পাসকি!");
+        }
     }
 
-    // --- MASTER SYNC LOGIC (Merged From Your Code) ---
     async function startMasterSync() {
         try {
-            // Using your target API
             const response = await fetch('https://api.bdg88zf.com/api/webapi/GetGameIssue', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    typeId: 1, 
-                    language: 0, 
-                    random: "e7fe6c090da2495ab8290dac551ef1ed", 
-                    signature: "1F390E2B2D8A55D693E57FD905AE73A7", 
-                    timestamp: Math.floor(Date.now()/1000) 
-                })
+                body: JSON.stringify({ typeId: 1, language: 0, random: "e7fe6c090da2495ab8290dac551ef1ed", signature: "1F390E2B2D8A55D693E57FD905AE73A7", timestamp: Math.floor(Date.now()/1000) })
             });
             const json = await response.json();
-            
             if (json && json.data) {
                 let currentIssue = json.data.issueNumber;
-                
                 if (currentIssue !== lastPeriod) {
-                    if (lastPeriod !== "") calculateAndVoice();
+                    if (lastPeriod !== "") {
+                        calculateResult();
+                    }
                     lastPeriod = currentIssue;
-                    
-                    // Display last 5 digits as requested
                     document.getElementById("periodText").innerText = "PERIOD: " + currentIssue.slice(-5);
-                    
-                    // Sum Based Prediction Logic (From your Code)
                     let digitsSum = currentIssue.split('').reduce((a, b) => a + (parseInt(b) || 0), 0);
                     let prediction = (digitsSum % 2 === 0) ? "BIG" : "SMALL";
-                    
                     document.getElementById("sig_text").innerText = prediction;
+                    
+                    // রেজাল্ট ভয়েস শেষ হওয়ার জন্য ৪ সেকেন্ড অপেক্ষা করে সিগন্যাল বলবে
+                    setTimeout(() => {
+                        speak(`নতুন পিরিয়ড এসেছে। এবারের সিগন্যাল ${prediction}। লেভেল ${step + 1} অনুযায়ী ${amounts[step]} টাকা ধরুন।`);
+                    }, 4500);
+                    
                     updateUI();
                 }
             }
-        } catch (error) {
-            console.log("Sync Re-trying...");
-        }
-        setTimeout(startMasterSync, 2000);
+        } catch (e) { console.log("Connecting..."); }
+        setTimeout(startMasterSync, 3000);
     }
 
-    function calculateAndVoice() {
-        let isWin = Math.random() > 0.45;
-        if (isWin) {
-            balance += (amounts[step] * 0.95);
-            wins++;
-            step = 0;
-            speak("অভিনন্দন বস্! আপনি জয়ী হয়েছেন।");
-        } else {
-            balance -= amounts[step];
-            losses++;
-            step = (step < 5) ? step + 1 : 0;
-            speak("দুঃখিত বস্, এই ধাপে লস হয়েছে। পরবর্তী স্টেপটি ফলো করুন।");
+    function calculateResult() {
+        let isWin = Math.random() > 0.45; 
+        
+        if (isWin) { 
+            let profit = (amounts[step] * 0.92).toFixed(2);
+            balance += parseFloat(profit); 
+            wins++; 
+            speak(`অভিনন্দন বস্! এই রাউন্ডে আমরা উইন হয়েছি। আপনি ${profit} টাকা প্রফিট করেছেন। পরের ট্রেডে আমরা আবার লেভেল ১ থেকে ${amounts[0]} টাকা ধরবো।`); 
+            step = 0; 
+        } else { 
+            let lostAmount = amounts[step];
+            balance -= lostAmount; 
+            losses++; 
+            let nextAmt = amounts[step + 1] ? amounts[step + 1] : amounts[0];
+            speak(`ওহ বস্, এই রাউন্ডে আমাদের ${lostAmount} টাকা লস হয়েছে। চিন্তা করবেন না, লস রিকভার করার জন্য পরের ট্রেডে আমরা লেভেল ${step + 2} অনুযায়ী ${nextAmt} টাকা ধরবো।`);
+            step = (step < 5) ? step + 1 : 0; 
         }
+        updateUI();
     }
 
     function updateUI() {
@@ -230,43 +232,20 @@
         }
     }
 
-    // --- DRAG & RESIZE ---
     const panel = document.getElementById("signalPanel");
+    const inner = document.getElementById("panelInner");
     const handle = document.getElementById("resizeHandle");
-    let isDragging = false, isResizing = false;
-    let startX, startY, startWidth, startHeight, panelX = 10, panelY = 20;
-
+    let isDragging = false, isResizing = false, sX, sY, sW, sH, pL, pT;
+    
     panel.addEventListener("touchstart", (e) => {
-        if(e.target === handle) {
-            isResizing = true;
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            startWidth = panel.offsetWidth;
-            startHeight = panel.offsetHeight;
-        } else if(e.target.tagName !== "BUTTON" && e.target.tagName !== "A") {
-            isDragging = true;
-            startX = e.touches[0].clientX - panelX;
-            startY = e.touches[0].clientY - panelY;
-        }
+        if(e.target === handle) { isResizing = true; sX = e.touches[0].clientX; sY = e.touches[0].clientY; sW = panel.offsetWidth; sH = panel.offsetHeight; }
+        else if(e.target.tagName !== "BUTTON" && e.target.tagName !== "A") { isDragging = true; sX = e.touches[0].clientX; sY = e.touches[0].clientY; pL = panel.offsetLeft; pT = panel.offsetTop; }
     });
-
     window.addEventListener("touchmove", (e) => {
-        if (isDragging) {
-            panelX = e.touches[0].clientX - startX;
-            panelY = e.touches[0].clientY - startY;
-            panel.style.left = panelX + "px";
-            panel.style.top = panelY + "px";
-        }
-        if (isResizing) {
-            let nw = startWidth + (e.touches[0].clientX - startX);
-            let nh = startHeight + (e.touches[0].clientY - startY);
-            if(nw > 220) panel.style.width = nw + "px";
-            if(nh > 250) panel.style.height = nh + "px";
-        }
+        if (isDragging) { panel.style.left = (pL + (e.touches[0].clientX - sX)) + "px"; panel.style.top = (pT + (e.touches[0].clientY - sY)) + "px"; }
+        if (isResizing) { let nW = sW + (e.touches[0].clientX - sX); let nH = sH + (e.touches[0].clientY - sY); if(nW > 200) panel.style.width = nW + "px"; if(nH > 350) panel.style.height = nH + "px"; inner.style.transform = `scale(${nW / 300})`; }
     }, { passive: false });
-
     window.addEventListener("touchend", () => { isDragging = false; isResizing = false; });
 </script>
-
 </body>
 </html>
